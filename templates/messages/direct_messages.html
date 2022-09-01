@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <form method="POST">
+            {{ form.hidden_tag() }}
+            
+            {% for field in form if field.widget.input_type != 'hidden' %}
+            {% for error in field.errors %}
+            <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+            {{ field(placeholder=field.label.text, class="form-control") }}
+            {% endfor %}
+      </div>
+      <button class="btn btn-outline-success">Add new message!</button>
+    </form>
+    <div>
+      <ul>
+        {% for message in user.direct_messages%}
+        <ul>
+          <a href="/users/{{ message.user.id }}"
+              >@{{ message.user.username }}</a
+            > 
+            <span> to: {{message.recipient_id}}
+
+            </span>
+          <p class="single-message">{{ message.text }}</p>
+          <span class="text-muted"
+            >{{ message.timestamp.strftime('%d %B %Y') }}</span
+          >
+        </ul>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
